@@ -1,14 +1,49 @@
 import java.util.ArrayList;
 
 public class Playlist {
-    String nome;
-    ArrayList<Musica> musicas = new ArrayList<>();
 
-    void adicionarMusica(Musica musica) {
+    private String nome;
+    private ArrayList<Musica> musicas;
+
+    
+    public Playlist() {
+        this.nome = "Nova Playlist";
+        this.musicas = new ArrayList<>();
+    }
+
+    
+    public Playlist(String nome) {
+        this();  
+        setNome(nome);
+    }
+
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public ArrayList<Musica> getMusicas() {
+        return new ArrayList<>(musicas); 
+    }
+
+  
+    public void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            System.out.println("Aviso: nome inválido para playlist. Mantendo valor anterior.");
+            return;
+        }
+        this.nome = nome.trim();
+    }
+
+    public void adicionarMusica(Musica musica) {
+        if (musica == null) {
+            System.out.println("Aviso: não é possível adicionar uma música nula.");
+            return;
+        }
         this.musicas.add(musica);
     }
 
-    void removerMusica(int indice) {
+    public void removerMusica(int indice) {
         if (indice >= 0 && indice < musicas.size()) {
             this.musicas.remove(indice);
         } else {
@@ -16,7 +51,7 @@ public class Playlist {
         }
     }
 
-    void listarMusicas() {
+    public void listarMusicas() {
         System.out.println("\n--- Playlist: " + this.nome + " ---");
         if (musicas.isEmpty()) {
             System.out.println("Nenhuma música nesta playlist.");
@@ -28,15 +63,15 @@ public class Playlist {
         }
     }
 
-    int getDuracaoTotal() {
+    public int getDuracaoTotal() {
         int total = 0;
         for (Musica m : musicas) {
-            total += m.duracaoSegundos;
+            total += m.getDuracaoSegundos();
         }
         return total;
     }
 
-    int getQuantidadeMusicas() {
+    public int getQuantidadeMusicas() {
         return this.musicas.size();
     }
 }
