@@ -2,12 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StreamingMusica {
-    static ArrayList<Musica> listaGeral = new ArrayList<>();
-    static Usuario usuario = new Usuario();
-    static Scanner scanner = new Scanner(System.in);
+
+    private static ArrayList<Musica> listaGeral = new ArrayList<>();
+    private static Usuario usuario;
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        usuario.nome = "Usuário Logado";
+        usuario = new Usuario("Usuário Logado");
         adicionarMusicasTeste();
 
         int opcao;
@@ -58,11 +59,16 @@ public class StreamingMusica {
     }
 
     public static void cadastrarMusica() {
-        Musica m = new Musica();
-        System.out.print("Título: "); m.titulo = scanner.nextLine();
-        System.out.print("Artista: "); m.artista = scanner.nextLine();
-        System.out.print("Gênero: "); m.genero = scanner.nextLine();
-        System.out.print("Duração (segundos): "); m.duracaoSegundos = lerOpcao();
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Artista: ");
+        String artista = scanner.nextLine();
+        System.out.print("Gênero: ");
+        String genero = scanner.nextLine();
+        System.out.print("Duração (segundos): ");
+        int duracao = lerOpcao();
+
+        Musica m = new Musica(titulo, artista, duracao, genero);
         listaGeral.add(m);
         System.out.println("Música adicionada ao sistema.");
     }
@@ -78,24 +84,29 @@ public class StreamingMusica {
     public static void buscarMusica() {
         System.out.print("Digite o título para buscar: ");
         String busca = scanner.nextLine();
+        boolean encontrou = false;
         for (Musica m : listaGeral) {
             if (m.contemTitulo(busca)) {
                 m.exibir();
+                encontrou = true;
             }
+        }
+        if (!encontrou) {
+            System.out.println("Nenhuma música encontrada para: " + busca);
         }
     }
 
     public static void gerenciarPlaylists() {
-        if (usuario.playlists.isEmpty()) {
+        if (usuario.getPlaylists().isEmpty()) {
             System.out.println("Crie uma playlist primeiro (Opção 4).");
             return;
         }
         usuario.listarPlaylists();
         System.out.print("Digite o índice da playlist: ");
         int idx = lerOpcao();
-        
-        if (idx >= 0 && idx < usuario.playlists.size()) {
-            Playlist p = usuario.playlists.get(idx);
+
+        if (idx >= 0 && idx < usuario.getPlaylists().size()) {
+            Playlist p = usuario.getPlaylists().get(idx);
             System.out.println("\n1. Adicionar Música | 2. Remover | 3. Ver Detalhes | 0. Voltar");
             int sub = lerOpcao();
 
@@ -114,6 +125,8 @@ public class StreamingMusica {
                 p.listarMusicas();
                 System.out.println("Tempo total: " + (p.getDuracaoTotal() / 60) + " min");
             }
+        } else {
+            System.out.println("Índice de playlist inválido.");
         }
     }
 
@@ -126,11 +139,7 @@ public class StreamingMusica {
     }
 
     public static void adicionarMusicasTeste() {
-        Musica m1 = new Musica();
-        m1.titulo = "Bohemian Rhapsody"; m1.artista = "Queen"; m1.duracaoSegundos = 354; m1.genero = "Rock";
-        listaGeral.add(m1);
-        Musica m2 = new Musica();
-        m2.titulo = "Billie Jean"; m2.artista = "Michael Jackson"; m2.duracaoSegundos = 293; m2.genero = "Pop";
-        listaGeral.add(m2);
+        listaGeral.add(new Musica("Bohemian Rhapsody", "Queen", 354, "Rock"));
+        listaGeral.add(new Musica("Billie Jean", "Michael Jackson", 293, "Pop"));
     }
 }
