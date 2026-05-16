@@ -111,8 +111,8 @@ java -cp out br.com.streaming.principal.StreamingMusica
 
 ## 👤 Autor
 
-- **Nome:** Alexsandro Vasconcelos  
-- **RA:** [seu RA aqui]
+- **Nome:** João Gustavo Sanches Silva  
+- **RA:** 41752856
 
 ---
 
